@@ -30,7 +30,7 @@ std::vector<ublas::matrix<double>*>Matricies;
 //Function Prototypes
 void process_menu_in(char);
 void print_menu();
-int print_matricies();
+void print_matricies(); 
 void push_answer(ublas::matrix<double>*);
 bool check_matrcies(ublas::matrix<double>*);
 //
@@ -86,7 +86,7 @@ void process_menu_in(char inchar)
 		}
 		else
 		{
-			std::cout << "the first matix entered has " << (*(Matricies[0])).size1 << " rows, the second matrix entered has " << (*temp_ptr).size2
+			std::cout << "the first matix entered has " << (*(Matricies[0])).size1() << " rows, the second matrix entered has " << (*temp_ptr).size2()
 				<< " columns, making them incompatible please re-add a compatible matrix";
 		}
 
@@ -145,7 +145,7 @@ void process_menu_in(char inchar)
 		{
 			ublas::matrix<double> temp_matrix;
 
-			temp_matrix = (*(Matricies[0])) * (*(Matricies[1]));
+			//temp_matrix = (*(Matricies[0])) * (*(Matricies[1]));
 
 			push_answer(&temp_matrix);
 
@@ -226,7 +226,7 @@ void push_answer(ublas::matrix<double>* ans_matrix)
 
 bool check_matricies(ublas::matrix<double>* temp_matrix)
 {
-	if ((*(Matricies[0])).size1 == (*temp_matrix).size2)
+	if ((*(Matricies[0])).size1() == (*temp_matrix).size2())
 	{
 		return true;
 	}
