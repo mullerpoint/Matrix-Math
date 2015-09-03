@@ -23,6 +23,8 @@
 //Global variables and defines
 #define TEXT_WIDTH 20
 bool done = false;
+using namespace boost::numeric;
+std::vector<ublas::matrix<double>*>Matricies;
 //
 
 //Function Prototypes
@@ -58,9 +60,22 @@ void process_menu_in(char inchar)
 	switch (toupper(inchar))
 	{
 
-	//add a matrix
+		//add a matrix
 	case 'A':
 	{
+		//create local variables 
+		int rows, columns;
+		ublas::matrix<double>* temp_ptr;
+
+		//query user for input
+		std::cout << "What size matrix do you want to add:" << std::endl << "Rows: ";
+		std::cin >> rows;
+		std::cout << std::endl << "Columns: ";
+		std::cin >> columns;
+
+		//create matrix
+		temp_ptr = new ublas::matrix<double>(rows, columns);
+		Matricies.push_back(temp_ptr);
 
 	}
 	break;
@@ -68,28 +83,83 @@ void process_menu_in(char inchar)
 	//add matricies
 	case '+':
 	{
+		if (Matricies.size() >= 1)
+		{
+			ublas::matrix<double> temp_matrix;
 
+			temp_matrix = *(Matricies[0]) + *(Matricies[1]);
+
+			push_answer(&temp_matrix);
+
+		}
+		else
+		{
+			std::cout << "ERR: Not Enough matricies entered" << std::endl;
+		}
 	}
 	break;
 
 	//subtract matricies
 	case '-':
 	{
+		if (Matricies.size() >= 1)
+		{
+			ublas::matrix<double> temp_matrix;
 
+			temp_matrix = *(Matricies[0]) - *(Matricies[1]);
+
+			push_answer(&temp_matrix);
+
+		}
+		else
+		{
+			std::cout << "ERR: Not Enough matricies entered" << std::endl;
+		}
 	}
 	break;
 
 	//multiply matricies
 	case '*':
 	{
+		if (Matricies.size() >= 1)
+		{
+			ublas::matrix<double> temp_matrix;
 
+			temp_matrix = *(Matricies[0]) * *(Matricies[1]);
+
+			push_answer(&temp_matrix);
+
+		}
+		else
+		{
+			std::cout << "ERR: Not Enough matricies entered" << std::endl;
+		}
 	}
 	break;
 
 	//divide matricies
 	case '/':
 	{
+		if (Matricies.size() >= 1)
+		{
+			ublas::matrix<double> temp_matrix;
 
+			temp_matrix = *(Matricies[0]) / *(Matricies[1]);
+
+			push_answer(&temp_matrix);
+
+		}
+		else
+		{
+			std::cout << "ERR: Not Enough matricies entered" << std::endl;
+		}
+	}
+	break;
+	
+	//print the menu again
+	case 'M':
+	{
+		print_menu();
 	}
 	break;
 
@@ -102,5 +172,26 @@ void process_menu_in(char inchar)
 		break;
 	}
 
+	return;
+}
 
+
+
+void print_menu()
+{
+	std::cout << "menu";
+	return;
+}
+
+void push_answer(ublas::matrix<double>* ans_matrix)
+{
+	if (Matricies.size() == 1)
+	{
+		Matricies.push_back(ans_matrix);
+	}
+	else
+	{
+		Matricies[2] = ans_matrix;
+	}
+	return;
 }
