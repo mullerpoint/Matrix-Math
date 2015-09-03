@@ -31,6 +31,8 @@ std::vector<ublas::matrix<double>*>Matricies;
 void process_menu_in(char);
 void print_menu();
 int print_matricies();
+void push_answer(ublas::matrix<double>*);
+bool check_matrcies(ublas::matrix<double>*);
 //
 
 
@@ -75,10 +77,28 @@ void process_menu_in(char inchar)
 
 		//create matrix
 		temp_ptr = new ublas::matrix<double>(rows, columns);
-		Matricies.push_back(temp_ptr);
+
+		bool check = check_matrcies(temp_ptr);
+
+		if (check)
+		{
+			Matricies.push_back(temp_ptr);
+		}
+		else
+		{
+			std::cout << "the first matix entered has " << (*(Matricies[0])).size1 << " rows, the second matrix entered has " << (*temp_ptr).size2
+				<< " columns, making them incompatible please re-add a compatible matrix";
+		}
 
 	}
 	break;
+
+	//fill in the matrix
+	case 'F':
+	{
+		//code to fill the matrix
+		std::cout << "matrix filler called" << std::endl;
+	}
 
 	//add matricies
 	case '+':
@@ -125,7 +145,7 @@ void process_menu_in(char inchar)
 		{
 			ublas::matrix<double> temp_matrix;
 
-			temp_matrix = *(Matricies[0]) * *(Matricies[1]);
+			temp_matrix = (*(Matricies[0])) * (*(Matricies[1]));
 
 			push_answer(&temp_matrix);
 
@@ -155,7 +175,7 @@ void process_menu_in(char inchar)
 		}
 	}
 	break;
-	
+
 	//print the menu again
 	case 'M':
 	{
@@ -179,7 +199,15 @@ void process_menu_in(char inchar)
 
 void print_menu()
 {
-	std::cout << "menu";
+	std::cout << std::endl
+		<< "A -> Add a matrix object" << std::endl
+		<< "F -> Fill a Matrix" << std::endl
+		<< "M -> Print this menu again" << std::endl
+		<< "+ -> Add the two entered matricies" << std::endl
+		<< "- -> Subtract the two entered matricies" << std::endl
+		<< "* -> Multiply the two entered matricies" << std::endl
+		<< "/ -> Divide the two entered matricies" << std::endl
+		<< "Q -> Quit the program" << std::endl << std::endl;
 	return;
 }
 
@@ -193,5 +221,26 @@ void push_answer(ublas::matrix<double>* ans_matrix)
 	{
 		Matricies[2] = ans_matrix;
 	}
+	return;
+}
+
+bool check_matricies(ublas::matrix<double>* temp_matrix)
+{
+	if ((*(Matricies[0])).size1 == (*temp_matrix).size2)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void print_matricies()
+{
+	std::cout << "Matrix 1: " << std::endl << (*(Matricies[0])) << std::endl
+		<< "Matrix 2: " << std::endl << (*(Matricies[1])) << std::endl
+		<< "Answer Matrix" << std::endl << (*(Matricies[2])) << std::endl << std::endl;
+
 	return;
 }
