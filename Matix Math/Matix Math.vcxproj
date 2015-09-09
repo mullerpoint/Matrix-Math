@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Matrix Math 2\Matrix Math 2\Source.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC6537DF-F1D1-4F20-9268-B0B17E1E8BBE}</ProjectGuid>
