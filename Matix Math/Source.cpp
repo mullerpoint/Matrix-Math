@@ -18,6 +18,10 @@
 #include <vector> //use vector functionality
 #include <boost/numeric/ublas/matrix.hpp> //boost matrix library
 #include <boost/numeric/ublas/io.hpp> //boost matrix I/O library
+#include <fstream> //testing
+#include <sstream> //testing
+#include <algorithm> //testing
+#include <boost/numeric/ublas/operation.hpp> //testing
 #endif
 
 //Global variables and defines
@@ -32,7 +36,7 @@ void process_menu_in(char);
 void print_menu();
 void print_matricies(); 
 void push_answer(ublas::matrix<double>*);
-bool check_matrcies(ublas::matrix<double>*);
+//bool check_matrcies(ublas::matrix<double>*, ublas::matrix<double>*);
 //
 
 
@@ -51,10 +55,12 @@ int main(int argc, char* argv[])
 	//while loop for main functionality 
 	while (!done)
 	{
-		std::getline(std::cin, menu_in);
+		std::cout << "Menu: ";
+		std::cin >> menu_in;
+		std::cin.ignore();
 		process_menu_in(menu_in[0]);
 	}
-
+	std::cout << "Goodbye" << std::endl;
 }
 
 void process_menu_in(char inchar)
@@ -72,15 +78,15 @@ void process_menu_in(char inchar)
 		//query user for input
 		std::cout << "What size matrix do you want to add:" << std::endl << "Rows: ";
 		std::cin >> rows;
-		std::cout << std::endl << "Columns: ";
+		std::cout << "Columns: " << std::endl ;
 		std::cin >> columns;
 
 		//create matrix
 		temp_ptr = new ublas::matrix<double>(rows, columns);
 
-		bool check = check_matrcies(temp_ptr);
+		//bool check = check_matrcies(Matricies[0], temp_ptr);
 
-		if (check)
+		if (true/*check*/)
 		{
 			Matricies.push_back(temp_ptr);
 		}
@@ -96,18 +102,42 @@ void process_menu_in(char inchar)
 	//fill in the matrix
 	case 'F':
 	{
-		//code to fill the matrix
-		std::cout << "matrix filler called" << std::endl;
+		//std::cout << "matrix filler called" << std::endl;
+		std::string line;
+		int row = 0, column, number;
+
+		int matrixNum;
+		std::cout << "Enter the Matrix You want to enter(0,1): ";
+		std::cin >> matrixNum;
+
+		if (matrixNum != 0 || matrixNum!= 1)
+		{
+			std::cout << "Please try again and choose a matrix that exists already";
+		}
+		else{
+			while (std::getline(std::cin, line) && !line.empty())
+			{
+				
+				std::istringstream iss(line);
+				column = 0;
+				while (iss >> number)
+				{
+					(*(Matricies[0]))(row, column) = number;
+					column++;
+				}//while
+			}//while
+		}//else
 	}
+	break;
 
 	//add matricies
-	case '+':
+	/*case '+':
 	{
 		if (Matricies.size() >= 1)
 		{
 			ublas::matrix<double> temp_matrix;
 
-			temp_matrix = *(Matricies[0]) + *(Matricies[1]);
+			temp_matrix = ublas::sum((*(Matricies[0])), (*(Matricies[1])));
 
 			push_answer(&temp_matrix);
 
@@ -117,10 +147,10 @@ void process_menu_in(char inchar)
 			std::cout << "ERR: Not Enough matricies entered" << std::endl;
 		}
 	}
-	break;
+	break;*/
 
 	//subtract matricies
-	case '-':
+	/*case '-':
 	{
 		if (Matricies.size() >= 1)
 		{
@@ -136,7 +166,7 @@ void process_menu_in(char inchar)
 			std::cout << "ERR: Not Enough matricies entered" << std::endl;
 		}
 	}
-	break;
+	break;*/
 
 	//multiply matricies
 	case '*':
@@ -145,7 +175,7 @@ void process_menu_in(char inchar)
 		{
 			ublas::matrix<double> temp_matrix;
 
-			//temp_matrix = (*(Matricies[0])) * (*(Matricies[1]));
+			temp_matrix = ublas::prod((*(Matricies[0])), (*(Matricies[1])));
 
 			push_answer(&temp_matrix);
 
@@ -158,13 +188,13 @@ void process_menu_in(char inchar)
 	break;
 
 	//divide matricies
-	case '/':
+	/*case '/':
 	{
 		if (Matricies.size() >= 1)
 		{
 			ublas::matrix<double> temp_matrix;
 
-			temp_matrix = *(Matricies[0]) / *(Matricies[1]);
+			temp_matrix = (Matricies[0]) / *(Matricies[1]);
 
 			push_answer(&temp_matrix);
 
@@ -174,7 +204,7 @@ void process_menu_in(char inchar)
 			std::cout << "ERR: Not Enough matricies entered" << std::endl;
 		}
 	}
-	break;
+	break;*/
 
 	//print the menu again
 	case 'M':
@@ -203,10 +233,10 @@ void print_menu()
 		<< "A -> Add a matrix object" << std::endl
 		<< "F -> Fill a Matrix" << std::endl
 		<< "M -> Print this menu again" << std::endl
-		<< "+ -> Add the two entered matricies" << std::endl
-		<< "- -> Subtract the two entered matricies" << std::endl
+		/*<< "+ -> Add the two entered matricies" << std::endl
+		<< "- -> Subtract the two entered matricies" << std::endl*/
 		<< "* -> Multiply the two entered matricies" << std::endl
-		<< "/ -> Divide the two entered matricies" << std::endl
+		/*<< "/ -> Divide the two entered matricies" << std::endl*/
 		<< "Q -> Quit the program" << std::endl << std::endl;
 	return;
 }
@@ -224,17 +254,17 @@ void push_answer(ublas::matrix<double>* ans_matrix)
 	return;
 }
 
-bool check_matricies(ublas::matrix<double>* temp_matrix)
-{
-	if ((*(Matricies[0])).size1() == (*temp_matrix).size2())
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+//bool check_matricies(ublas::matrix<double>* matrixref1, ublas::matrix<double>* matrixref2)
+//{
+//	if ((*matrixref1).size1() == (*matrixref2).size2())
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
 
 void print_matricies()
 {
